@@ -1,12 +1,50 @@
-# Thinkmill graphQL styleguide
+# Thinkmill GraphQL Style Guide
 
-ToDo: Define up-front:
+This style guide documents the standards we have developed for designing GraphQL Schemas at Thinkmill.
 
-- What is an "Entity"
+## Terms
+
+In order to keep the style guide implementation-agnostic, we refer to _entities_, _entity types_ and _entity collections_.
+
+In an SQL-backed implementation, the _entity type_ for a `User` would be the schema; the _entity collection_ would be the `users` table and an `entity` would be a record in the table.
+
+Each _entity type_ has a singular and plural label, which we refer to as `{Entity}` and `{Entities}` in this style guide. Each entity also contains _fields_, which map to properties of the entity.
+
+Throughout the guide, we will use the following example schema:
+
+```
+type User {
+  id: ID!
+  name: String
+  company: Company
+  dob: String
+  status: UserStatusEnum
+  emails: [Email]
+}
+
+enum UserStatusEnum {
+  ACTIVE
+  INACTIVE
+}
+
+type Company {
+  id: ID!
+  name: String
+  employeeCount: Number
+  users: [User]
+}
+
+type Email {
+  id: ID!
+  email: String
+  isVerified: Boolean
+  user: User
+}
+```
 
 ## Queries
 
-For each entity we generate the four top level queries:
+For each entity type we generate the four top level queries:
 
 - `all{Entities}`
 - `_all{Entities}Meta`
@@ -151,16 +189,58 @@ This where clause is different to the all entities where clause in that it only 
 
 ## `_{Entity}Meta`
 
-# Per Entity
+JED WHAT DO WE HAVE TO SAY ABOUT \_EntityMeta? it returns a count that is always 1?
 
-### type {Entity} with `id` and {fields}
+## Field types
 
-- ... scalar fields
-- relationship fields
-  - Add
-    - {field}(query meta): Type or [Type] of related entity
-    - \_{field}Meta(query meta): \_QueryMeta
+JED: Better name than field types?
 
-### input {entity}(where)
+## Relationship
 
-all{Entity}()
+### `where` filters
+
+- `{relatedEntity}_every`: whereInput
+- `{relatedEntity}_some`: whereInput
+- `{relatedEntity}_none`: whereInput
+- `{relatedEntity}_is_null`: Boolean
+
+## String
+
+### `where` filters
+
+- `{Field}:` String
+- `{Field}_not`: String
+- `{Field}_contains`: String
+- `{Field}_not_contains`: String
+- `{Field}_starts_with`: String
+- `{Field}_not_starts_with`: String
+- `{Field}_ends_with`: String
+- `{Field}_not_ends_with`: String
+- `{Field}_i`: String
+- `{Field}_not_i`: String
+- `{Field}_contains_i`: String
+- `{Field}_not_contains_i`: String
+- `{Field}_starts_with_i`: String
+- `{Field}_not_starts_with_i`: String
+- `{Field}_ends_with_i`: String
+- `{Field}_not_ends_with_i`: String
+- `{Field}_in`: [String]
+- `{Field}_not_in`: [String]
+
+## Operators
+
+ToDo: Where does this section belong?
+
+- `AND`: [TaskWhereInput]
+- `OR`: [TaskWhereInput]
+
+## ID
+
+`{Field}`: ID
+`{Field}_not`: ID
+`{Field}_in`: [ID!]
+`{Field}_not_in`: [ID!]
+
+## Integer
+
+## Mutations
