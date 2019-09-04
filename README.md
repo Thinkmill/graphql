@@ -23,7 +23,7 @@ query {
 }
 ```
 
-Retrieves all entities from a entity collection. Each entity can accept a standard list of query arguments. These are:
+Retrieves all entities from a entity collection. `all{Entities}` queries accept a standard list of query arguments. These are:
 
 ### `where`
 
@@ -35,7 +35,7 @@ query {
 }
 ```
 
-Limit results to those matching the where clause. Where clauses generated will depend on the field types available. See: [entityWhere]()
+Limit results to those matching the where clause. Where clauses generated will depend on the field types available.
 
 ### `search`
 
@@ -110,6 +110,46 @@ query {
 When `first` and `skip` are used together, skip works as an offset for the `first` argument. For example`(skip:10, first:10)` selects results 11 through 20.
 
 Both `skip` and `first` respect the values of the `where`, `search` and `orderBy` arguments.
+
+## `_all{Entities}Meta`
+
+```gql
+query {
+  _allUsersMeta {
+    count
+  }
+}
+```
+
+Get the total number of entities matching any `where` and `search` clauses provided.
+
+The `where` and `search` clauses work the same as the `all{Entities}` query.
+
+## `{Entity}`
+
+```gql
+query {
+  User(where: { id: ID }) {
+    name
+  }
+}
+```
+
+Retrieves an entity from a collection. The single entity query has one argument.
+
+### `where`
+
+```gql
+query {
+  User(where: { id: ID }) {
+    name
+  }
+}
+```
+
+This where clause is different to the all entities where clause in that it only can only filter by a matching `id`.
+
+## `_{Entity}Meta`
 
 # Per Entity
 
