@@ -236,11 +236,20 @@ ToDo: Where does this section belong?
 
 ## ID
 
-`{Field}`: ID
-`{Field}_not`: ID
-`{Field}_in`: [ID!]
-`{Field}_not_in`: [ID!]
+- `{Field}`: ID
+- `{Field}_not`: ID
+- `{Field}_in`: [ID!]
+- `{Field}_not_in`: [ID!]
 
 ## Integer
+
+- `{Field}: Int`
+- `{Field}_not`: Int
+- `{Field}_lt`: Int
+- `{Field}_lte`: Int
+- `{Field}_gt`: Int
+- `{Field}_gte`: Int
+- `{Field}_in`: [Int]
+- `{Field}_not_in`: [Int]
 
 ## Mutations
