@@ -97,17 +97,19 @@ It is important to provide the same `where` and `search` arguments to both the `
 
 ```gql
 query {
-    allUsers (search:'a', skip: 10, first: 10) {
-  id
-    }
-    _allUsersMeta(search: 'a') {
-        count
-    }
+  allUsers (search:'a', skip: 10, first: 10) {
+    id
+  }
+  _allUsersMeta(search: 'a') {
+    count
+  }
 }
 
 ```
 
-When `first` and `skip` are used together, the total `{first}` results will be selected _after_ skipping the first `{skip}` results, where both respect the values of the `where`, `search` and `orderBy` arguments.
+When `first` and `skip` are used together, skip works as an offset for the `first` argument. For example`(skip:10, first:10)` selects results 11 through 20.
+
+Both `skip` and `first` respect the values of the `where`, `search` and `orderBy` arguments.
 
 # Per Entity
 
