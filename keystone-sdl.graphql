@@ -1,0 +1,438 @@
+## A keystone generated schema for the example defined in readme
+
+directive @cacheControl(
+  maxAge: Int
+  scope: CacheControlScope
+) on FIELD_DEFINITION | OBJECT | INTERFACE
+type _ListAccess {
+  # Access Control settings for the currently logged in (or anonymous)
+  # user when performing 'create' operations.
+  # NOTE: 'create' can only return a Boolean.
+  # It is not possible to specify a declarative Where clause for this
+  # operation
+  create: Boolean
+  # Access Control settings for the currently logged in (or anonymous)
+  # user when performing 'read' operations.
+  read: JSON
+  # Access Control settings for the currently logged in (or anonymous)
+  # user when performing 'update' operations.
+  update: JSON
+  # Access Control settings for the currently logged in (or anonymous)
+  # user when performing 'delete' operations.
+  delete: JSON
+}
+
+type _ListMeta {
+  # The Keystone List name
+  name: String
+  # Access control configuration for the currently authenticated
+  # request
+  access: _ListAccess
+  # Information on the generated GraphQL schema
+  schema: _ListSchema
+}
+
+type _ListSchema {
+  # The typename as used in GraphQL queries
+  type: String
+  # Top level GraphQL query names which either return this type, or
+  # provide aggregate information about this type
+  queries: [String]
+  # Information about fields on other types which return this type, or
+  # provide aggregate information about this type
+  relatedFields: [_ListSchemaRelatedFields]
+}
+
+type _ListSchemaRelatedFields {
+  # The typename as used in GraphQL queries
+  type: String
+  # A list of GraphQL field names
+  fields: [String]
+}
+
+type _QueryMeta {
+  count: Int
+}
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+input CompaniesCreateInput {
+  data: CompanyCreateInput
+}
+
+input CompaniesUpdateInput {
+  id: ID!
+  data: CompanyUpdateInput
+}
+
+#  A keystone list
+type Company {
+  # This virtual field will be resolved in one of the following ways (in this order):
+  #  1. Execution of 'labelResolver' set on the Company List config, or
+  #  2. As an alias to the field set on 'labelField' in the Company List config, or
+  #  3. As an alias to a 'name' field on the Company List (if one exists), or
+  #  4. As an alias to the 'id' field on the Company List.
+  _label_: String
+  id: ID
+  name: String
+  employeeCount: Int
+}
+
+input CompanyCreateInput {
+  name: String
+  employeeCount: Int
+}
+
+input CompanyRelateToOneInput {
+  create: CompanyCreateInput
+  connect: CompanyWhereUniqueInput
+  disconnect: CompanyWhereUniqueInput
+  disconnectAll: Boolean
+}
+
+input CompanyUpdateInput {
+  name: String
+  employeeCount: Int
+}
+
+input CompanyWhereInput {
+  AND: [CompanyWhereInput]
+  OR: [CompanyWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  name: String
+  name_not: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  name_i: String
+  name_not_i: String
+  name_contains_i: String
+  name_not_contains_i: String
+  name_starts_with_i: String
+  name_not_starts_with_i: String
+  name_ends_with_i: String
+  name_not_ends_with_i: String
+  name_in: [String]
+  name_not_in: [String]
+  employeeCount: Int
+  employeeCount_not: Int
+  employeeCount_lt: Int
+  employeeCount_lte: Int
+  employeeCount_gt: Int
+  employeeCount_gte: Int
+  employeeCount_in: [Int]
+  employeeCount_not_in: [Int]
+}
+
+input CompanyWhereUniqueInput {
+  id: ID!
+}
+
+# DateTime custom scalar represents
+ an ISO 8601 datetime string
+scalar DateTime
+
+#  A keystone list
+type Email {
+  # This virtual field will be resolved in one of the following ways (in this order):
+  #  1. Execution of 'labelResolver' set on the Email List config, or
+  #  2. As an alias to the field set on 'labelField' in the Email List config, or
+  #  3. As an alias to a 'name' field on the Email List (if one exists), or
+  #  4. As an alias to the 'id' field on the Email List.
+  _label_: String
+  id: ID
+  email: String
+  isVerified: Boolean
+}
+
+input EmailCreateInput {
+  email: String
+  isVerified: Boolean
+}
+
+input EmailRelateToManyInput {
+  create: [EmailCreateInput]
+  connect: [EmailWhereUniqueInput]
+  disconnect: [EmailWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+input EmailsCreateInput {
+  data: EmailCreateInput
+}
+
+input EmailsUpdateInput {
+  id: ID!
+  data: EmailUpdateInput
+}
+
+input EmailUpdateInput {
+  email: String
+  isVerified: Boolean
+}
+
+input EmailWhereInput {
+  AND: [EmailWhereInput]
+  OR: [EmailWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  email: String
+  email_not: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  email_i: String
+  email_not_i: String
+  email_contains_i: String
+  email_not_contains_i: String
+  email_starts_with_i: String
+  email_not_starts_with_i: String
+  email_ends_with_i: String
+  email_not_ends_with_i: String
+  email_in: [String]
+  email_not_in: [String]
+  isVerified: Boolean
+  isVerified_not: Boolean
+}
+
+input EmailWhereUniqueInput {
+  id: ID!
+}
+
+# The `JSON` scalar type
+ represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON
+
+type Mutation {
+  #  Create a single User item.
+  createUser(data: UserCreateInput): User
+  #  Create multiple User items.
+  createUsers(data: [UsersCreateInput]): [User]
+  #  Update a single User item by ID.
+  updateUser(id: ID!, data: UserUpdateInput): User
+  #  Update multiple User items by ID.
+  updateUsers(data: [UsersUpdateInput]): [User]
+  #  Delete a single User item by ID.
+  deleteUser(id: ID!): User
+  #  Delete multiple User items by ID.
+  deleteUsers(ids: [ID!]): [User]
+  #  Create a single Company item.
+  createCompany(data: CompanyCreateInput): Company
+  #  Create multiple Company items.
+  createCompanies(data: [CompaniesCreateInput]): [Company]
+  #  Update a single Company item by ID.
+  updateCompany(id: ID!, data: CompanyUpdateInput): Company
+  #  Update multiple Company items by ID.
+  updateCompanies(data: [CompaniesUpdateInput]): [Company]
+  #  Delete a single Company item by ID.
+  deleteCompany(id: ID!): Company
+  #  Delete multiple Company items by ID.
+  deleteCompanies(ids: [ID!]): [Company]
+  #  Create a single Email item.
+  createEmail(data: EmailCreateInput): Email
+  #  Create multiple Email items.
+  createEmails(data: [EmailsCreateInput]): [Email]
+  #  Update a single Email item by ID.
+  updateEmail(id: ID!, data: EmailUpdateInput): Email
+  #  Update multiple Email items by ID.
+  updateEmails(data: [EmailsUpdateInput]): [Email]
+  #  Delete a single Email item by ID.
+  deleteEmail(id: ID!): Email
+  #  Delete multiple Email items by ID.
+  deleteEmails(ids: [ID!]): [Email]
+}
+
+type Query {
+  #  Search for all User items which match the where clause.
+  allUsers(
+    where: UserWhereInput
+    search: String
+    orderBy: String
+    first: Int
+    skip: Int
+  ): [User]
+  #  Search for the User item with the matching ID.
+  User(where: UserWhereUniqueInput!): User
+  #  Perform a meta-query on all User items which match the where clause.
+  _allUsersMeta(
+    where: UserWhereInput
+    search: String
+    orderBy: String
+    first: Int
+    skip: Int
+  ): _QueryMeta
+  #  Retrieve the meta-data for the User list.
+  _UsersMeta: _ListMeta
+  #  Search for all Company items which match the where clause.
+  allCompanies(
+    where: CompanyWhereInput
+    search: String
+    orderBy: String
+    first: Int
+    skip: Int
+  ): [Company]
+  #  Search for the Company item with the matching ID.
+  Company(where: CompanyWhereUniqueInput!): Company
+  #  Perform a meta-query on all Company items which match the where clause.
+  _allCompaniesMeta(
+    where: CompanyWhereInput
+    search: String
+    orderBy: String
+    first: Int
+    skip: Int
+  ): _QueryMeta
+  #  Retrieve the meta-data for the Company list.
+  _CompaniesMeta: _ListMeta
+  #  Search for all Email items which match the where clause.
+  allEmails(
+    where: EmailWhereInput
+    search: String
+    orderBy: String
+    first: Int
+    skip: Int
+  ): [Email]
+  #  Search for the Email item with the matching ID.
+  Email(where: EmailWhereUniqueInput!): Email
+  #  Perform a meta-query on all Email items which match the where clause.
+  _allEmailsMeta(
+    where: EmailWhereInput
+    search: String
+    orderBy: String
+    first: Int
+    skip: Int
+  ): _QueryMeta
+  #  Retrieve the meta-data for the Email list.
+  _EmailsMeta: _ListMeta
+  #  Retrieve the meta-data for all lists.
+  _ksListsMeta: [_ListMeta]
+}
+
+# The `Upload` scalar type
+ represents a file upload.
+scalar Upload
+
+#  A keystone list
+type User {
+  # This virtual field will be resolved in one of the following ways (in this order):
+  #  1. Execution of 'labelResolver' set on the User List config, or
+  #  2. As an alias to the field set on 'labelField' in the User List config, or
+  #  3. As an alias to a 'name' field on the User List (if one exists), or
+  #  4. As an alias to the 'id' field on the User List.
+  _label_: String
+  id: ID
+  name: String
+  company: Company
+  dob: DateTime
+  status: Int
+  emails(
+    where: EmailWhereInput
+    search: String
+    orderBy: String
+    first: Int
+    skip: Int
+  ): [Email]
+  _emailsMeta(
+    where: EmailWhereInput
+    search: String
+    orderBy: String
+    first: Int
+    skip: Int
+  ): _QueryMeta
+}
+
+input UserCreateInput {
+  name: String
+  company: CompanyRelateToOneInput
+  dob: DateTime
+  status: Int
+  emails: EmailRelateToManyInput
+}
+
+input UsersCreateInput {
+  data: UserCreateInput
+}
+
+input UsersUpdateInput {
+  id: ID!
+  data: UserUpdateInput
+}
+
+input UserUpdateInput {
+  name: String
+  company: CompanyRelateToOneInput
+  dob: DateTime
+  status: Int
+  emails: EmailRelateToManyInput
+}
+
+input UserWhereInput {
+  AND: [UserWhereInput]
+  OR: [UserWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  name: String
+  name_not: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  name_i: String
+  name_not_i: String
+  name_contains_i: String
+  name_not_contains_i: String
+  name_starts_with_i: String
+  name_not_starts_with_i: String
+  name_ends_with_i: String
+  name_not_ends_with_i: String
+  name_in: [String]
+  name_not_in: [String]
+  company: CompanyWhereInput
+  company_is_null: Boolean
+  dob: DateTime
+  dob_not: DateTime
+  dob_lt: DateTime
+  dob_lte: DateTime
+  dob_gt: DateTime
+  dob_gte: DateTime
+  dob_in: [DateTime]
+  dob_not_in: [DateTime]
+  status: Int
+  status_not: Int
+  status_lt: Int
+  status_lte: Int
+  status_gt: Int
+  status_gte: Int
+  status_in: [Int]
+  status_not_in: [Int]
+  #  condition must be true for all nodes
+  emails_every: EmailWhereInput
+  #  condition must be true for at least 1 node
+  emails_some: EmailWhereInput
+  #  condition must be false for all nodes
+  emails_none: EmailWhereInput
+  #  is the relation field null
+  emails_is_null: Boolean
+}
+
+input UserWhereUniqueInput {
+  id: ID!
+}
+
