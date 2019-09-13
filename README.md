@@ -85,11 +85,23 @@ type Email {
 For each entity type we generate the four top level queries:
 
 - `all{Entities}`
-- `_all{Entities}Meta`
 - `{Entity}`
+- `_all{Entities}Meta`
 - `_{Entity}Meta`
 
-### `all{Entities}`
+#### `{Entity}`
+
+```gql
+query {
+  User(where: { id: ID }) {
+    name
+  }
+}
+```
+
+Retrieves an entity from a collection. The single entity query has one argument.
+
+#### `all{Entities}`
 
 ```gql
 query {
@@ -99,9 +111,37 @@ query {
 }
 ```
 
-Retrieves all entities from a entity collection. `all{Entities}` queries accept a standard list of query arguments. These are:
+Retrieves all entities from a collection.
 
-### `where`
+#### `_all{Entities}Meta`
+
+```gql
+query {
+  _allUsersMeta {
+    count
+  }
+}
+```
+
+Get the total number of entities from a collection.
+
+#### `_{Entity}Meta`
+
+// TODO: This should probably be taken out of the spec
+
+```gql
+query {
+  _UserMeta(where: { id: ID }) {
+    count
+  }
+}
+```
+
+### Filtering
+
+These apply to queries for the `all{Entities}` and `{all}EntitiesMeta` types
+
+#### `where`
 
 ```gql
 query {
@@ -113,7 +153,16 @@ query {
 
 Limit results to those matching the where clause. Where clauses generated will depend on the field types available.
 
-### `search`
+##### Operators
+
+// TODO: Where does this section belong?
+
+- `AND`: [UserWhereInput]
+- `OR`: [UserWhereInput]
+
+#### `search`
+
+> Need to consider whether this should be included or whether it's just a KeystoneJS specific thing
 
 Will search the entity collection to limit results. Search logic is defined by the entity type.
 
@@ -125,19 +174,25 @@ query {
 }
 ```
 
-### `orderBy`
+### Sorting
+
+#### `orderBy`
 
 ```gql
 query {
-  allUsers(orderBy: "name") {
+  allUsers(orderBy: "name_ASC") {
     id
   }
 }
 ```
 
+> Ascending vs Descending?
+
 Will order the results. The orderBy string should match a field name in the entity collection.
 
-### `first`
+### Pagination
+
+#### `first`
 
 ```gql
 query {
@@ -151,7 +206,7 @@ Select this many results from the entity collection, sorted by the `orderBy` arg
 
 If less results are available, the number of available results will be returned.
 
-### `skip`
+#### `skip`
 
 ```gql
 query {
@@ -187,64 +242,22 @@ When `first` and `skip` are used together, skip works as an offset for the `firs
 
 Both `skip` and `first` respect the values of the `where`, `search` and `orderBy` arguments.
 
-## `_all{Entities}Meta`
-
-```gql
-query {
-  _allUsersMeta {
-    count
-  }
-}
-```
-
-Get the total number of entities matching any `where` and `search` clauses provided.
-
-The `where` and `search` clauses work the same as the `all{Entities}` query.
-
-## `{Entity}`
-
-```gql
-query {
-  User(where: { id: ID }) {
-    name
-  }
-}
-```
-
-Retrieves an entity from a collection. The single entity query has one argument.
-
-### `where`
-
-```gql
-query {
-  User(where: { id: ID }) {
-    name
-  }
-}
-```
-
-This where clause is different to the all entities where clause in that it only can only filter by a matching `id`.
-
-## `_{Entity}Meta`
-
-JED WHAT DO WE HAVE TO SAY ABOUT \_EntityMeta? it returns a count that is always 1?
-
 ## Field types
 
 JED: Better name than field types?
 
-## Relationship
+### Relationship
 
-### `where` filters
+#### `where` filters
 
 - `{relatedEntity}_every`: whereInput
 - `{relatedEntity}_some`: whereInput
 - `{relatedEntity}_none`: whereInput
 - `{relatedEntity}_is_null`: Boolean
 
-## String
+### String
 
-### `where` filters
+#### `where` filters
 
 - `{Field}:` String
 - `{Field}_not`: String
@@ -265,21 +278,14 @@ JED: Better name than field types?
 - `{Field}_in`: [String]
 - `{Field}_not_in`: [String]
 
-## Operators
-
-ToDo: Where does this section belong?
-
-- `AND`: [TaskWhereInput]
-- `OR`: [TaskWhereInput]
-
-## ID
+### ID
 
 - `{Field}`: ID
 - `{Field}_not`: ID
 - `{Field}_in`: [ID!]
 - `{Field}_not_in`: [ID!]
 
-## Integer
+### Integer
 
 - `{Field}: Int`
 - `{Field}_not`: Int
@@ -291,3 +297,5 @@ ToDo: Where does this section belong?
 - `{Field}_not_in`: [Int]
 
 ## Mutations
+
+// TODO
