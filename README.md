@@ -2,6 +2,33 @@
 
 This style guide documents the standards we have developed for designing GraphQL Schemas at Thinkmill.
 
+- Terms/Concepts/Dictionary
+- Workflow and Process (GraphQL as Design System equivalent)
+  - https://twitter.com/JedWatson/status/1170867029659791366
+  - GraphQL as ideal abstraction layer for the business schema
+- Types
+  - Schema Overview
+  - Field type conventions
+    - ID
+    - String
+    - Number
+    - Boolean
+    - Enum
+    - Date
+  - Relationships
+- Queries
+  - Standard Arguments
+  - Filtering
+  - Pagination
+  - Sorting
+  - Recursion of patterns/Nest Queries(?)
+- Mutations
+- Custom Types/Queries/Mutations (non-CRUD)
+- Authentication
+- Validation and Error Handling
+- Caching
+- Permissions
+
 ## Terms
 
 In order to keep the style guide implementation-agnostic, we refer to _entities_, _entity types_ and _entity collections_.
@@ -41,6 +68,17 @@ type Email {
   user: User
 }
 ```
+
+## Workflow and Process
+
+// TODO
+
+- How do you come up with a schema?
+- System requirements -> schema
+- Identify the queries/mutations you need and use this to inform the data schema
+- How do we get UX designers to think about the queries they need?
+- A graphQL schema can be easily related across the development spectrum
+- Given a UX design, how do you identify the schema requirements (in the same way you'd identify the design system requirements)
 
 ## Queries
 
