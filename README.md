@@ -2,19 +2,20 @@
 
 This style guide documents the standards we have developed for designing GraphQL Schemas at Thinkmill.
 
-- Terms/Concepts/Dictionary
+- Concepts
 - Workflow and Process (GraphQL as Design System equivalent)
   - https://twitter.com/JedWatson/status/1170867029659791366
   - GraphQL as ideal abstraction layer for the business schema
 - Types
   - Schema Overview
-  - Field type conventions
-    - ID
-    - String
-    - Number
-    - Boolean
-    - Enum
-    - Date
+  - See [Schemas and Types](https://graphql.org/learn/schema/) in the GraphQL Spec
+  - Field type conventions and use-cases
+    - ID (Scalar)
+    - String (Scalar)
+    - Boolean (Scalar)
+    - Number (Int or Float)
+    - Enum (Not quite a scalar type)
+    - Date (Not built in)
   - Relationships
 - Queries
   - Standard Arguments
@@ -29,7 +30,7 @@ This style guide documents the standards we have developed for designing GraphQL
 - Caching
 - Permissions
 
-## Terms
+## Concepts
 
 In order to keep the style guide implementation-agnostic, we refer to _entities_, _entity types_ and _entity collections_.
 
@@ -37,35 +38,56 @@ In an SQL-backed implementation, the _entity type_ for a `User` would be the sch
 
 Each _entity type_ has a singular and plural label, which we refer to as `{Entity}` and `{Entities}` in this style guide. Each entity also contains _fields_, which map to properties of the entity.
 
+We call entity properties _fields_, which have _field types_. Field types map to other entity types or scalar GraphQL Types.
+
 Throughout the guide, we will use the following example schema:
 
 ```
+scalar DateTime
+
+enum PriorityEnum {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+type Todo {
+  id: ID!
+  name: String
+  priority: PriorityEnum
+  dueDate: DateTime
+  user: User
+}
+
 type User {
   id: ID!
   name: String
-  company: Company
-  dob: String
-  status: UserStatusEnum
-  emails: [Email]
+  age: Int
+  height: Float
+  todos: [Todo]
 }
 
-enum UserStatusEnum {
-  ACTIVE
-  INACTIVE
+Query {
+  # Get one todo item
+  Todo(id: ID!): Todo
+  # Get all todo items
+  allTodos: [Todo!]!
 }
 
-type Company {
-  id: ID!
-  name: String
-  employeeCount: Number
-  users: [User]
+Mutation {
+  addTodo(name: String!, priority: Priority = LOW): Todo!
+  removeTodo(id: ID!): Todo!
 }
+```
 
-type Email {
-  id: ID!
-  email: String
-  isVerified: Boolean
-  user: User
+```gql
+query {
+  allTodos {
+    name
+    users(first: 10) {
+      name
+    }
+  }
 }
 ```
 
@@ -244,20 +266,14 @@ Both `skip` and `first` respect the values of the `where`, `search` and `orderBy
 
 ## Field types
 
-JED: Better name than field types?
+### ID
 
-### Relationship
-
-#### `where` filters
-
-- `{relatedEntity}_every`: whereInput
-- `{relatedEntity}_some`: whereInput
-- `{relatedEntity}_none`: whereInput
-- `{relatedEntity}_is_null`: Boolean
+- `{Field}`: ID
+- `{Field}_not`: ID
+- `{Field}_in`: [ID!]
+- `{Field}_not_in`: [ID!]
 
 ### String
-
-#### `where` filters
 
 - `{Field}:` String
 - `{Field}_not`: String
@@ -278,14 +294,7 @@ JED: Better name than field types?
 - `{Field}_in`: [String]
 - `{Field}_not_in`: [String]
 
-### ID
-
-- `{Field}`: ID
-- `{Field}_not`: ID
-- `{Field}_in`: [ID!]
-- `{Field}_not_in`: [ID!]
-
-### Integer
+### Number
 
 - `{Field}: Int`
 - `{Field}_not`: Int
@@ -295,6 +304,18 @@ JED: Better name than field types?
 - `{Field}_gte`: Int
 - `{Field}_in`: [Int]
 - `{Field}_not_in`: [Int]
+
+### Boolean
+
+// TODO
+
+### Enum
+
+// TODO
+
+### Date
+
+// TODO
 
 ## Mutations
 
